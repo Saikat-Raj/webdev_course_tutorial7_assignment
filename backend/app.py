@@ -13,7 +13,11 @@ from functools import wraps
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app, origins=['https://saikat-web-assignment.netlify.app', 'http://localhost:3000'], supports_credentials=True)
+CORS(app, 
+     origins=['https://saikat-web-assignment.netlify.app', 'http://localhost:3000'], 
+     supports_credentials=True,
+     allow_headers=['Content-Type', 'Authorization'],
+     methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'])
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'your-secret-key')
 
 api = Api(app, 
