@@ -13,7 +13,7 @@ from functools import wraps
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=[os.getenv('FRONTEND_URL', 'http://localhost:3000')])
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'your-secret-key')
 
 api = Api(app, 
@@ -425,4 +425,5 @@ class ProductGet(Resource):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    port = int(os.getenv('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)
