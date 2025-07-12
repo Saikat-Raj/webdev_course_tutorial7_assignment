@@ -21,7 +21,7 @@ const HomePage = ({ onExploreProducts }) => {
                     marginBottom: '20px',
                     lineHeight: '1.2'
                 }}>
-                    Welcome to ProdManage
+                    Welcome to ProdManager
                 </h1>
                 <p style={{
                     fontSize: '1.2rem',
