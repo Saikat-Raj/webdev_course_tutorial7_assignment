@@ -13,7 +13,7 @@ from functools import wraps
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app, origins=[os.getenv('FRONTEND_URL', 'http://localhost:3000')])
+CORS(app, origins=[os.getenv('FRONTEND_URL', 'http://localhost:3000')], supports_credentials=True)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'your-secret-key')
 
 api = Api(app, 
@@ -423,6 +423,13 @@ class ProductGet(Resource):
         except Exception as e:
             return {"error": str(e)}, 500
 
+
+@app.route('/health')
+def health_check():
+    return {
+        'status': 'healthy',
+        'frontend_url': os.getenv('FRONTEND_URL', 'http://localhost:3000')
+    }
 
 if __name__ == "__main__":
     port = int(os.getenv('PORT', 5000))
