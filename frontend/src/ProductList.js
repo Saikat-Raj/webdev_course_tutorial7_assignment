@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { styles } from './styles.js';
 import { API_BASE_URL } from './config.js';
 
@@ -6,14 +6,6 @@ const ProductList = ({ setCurrentPage, setEditingProduct }) => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [user, setUser] = useState(null);
-
-    useEffect(() => {
-        const savedUser = localStorage.getItem('user');
-        if (savedUser) {
-            setUser(JSON.parse(savedUser));
-        }
-    }, []);
 
     const getAuthHeaders = () => {
         const token = localStorage.getItem('token');
@@ -23,7 +15,7 @@ const ProductList = ({ setCurrentPage, setEditingProduct }) => {
         };
     };
 
-    const fetchProducts = async () => {
+    const fetchProducts = useCallback(async () => {
         try {
             const response = await fetch(`${API_BASE_URL}/listproducts`, {
                 headers: getAuthHeaders()
@@ -36,7 +28,7 @@ const ProductList = ({ setCurrentPage, setEditingProduct }) => {
         } finally {
             setLoading(false);
         }
-    };
+    }, []);
 
     const handleDelete = async (productId) => {
         if (window.confirm('Are you sure you want to delete this product?')) {
@@ -61,7 +53,7 @@ const ProductList = ({ setCurrentPage, setEditingProduct }) => {
 
     useEffect(() => {
         fetchProducts();
-    }, []);
+    }, [fetchProducts]);
 
     if (loading) return <div style={styles.pageContent}>Loading...</div>;
     if (error) return <div style={styles.pageContent}>Error: {error}</div>;
